@@ -284,9 +284,20 @@ public class FileUtils {
 
                 if ("primary".equalsIgnoreCase(type)) {
                     return Environment.getExternalStorageDirectory() + "/" + split[1];
+                } else {
+                    String strPath;
+    
+                    if (Environment.isExternalStorageRemovable()){
+                        strPath = System.getenv("EXTERNAL_STORAGE");
+                    } else{
+                        strPath = System.getenv("SECONDARY_STORAGE");
+                        if (strPath == null || strPath.length() == 0) {
+                            strPath = System.getenv("EXTERNAL_SDCARD_STORAGE");
+                        }
+                    }
+    
+                    return strPath + "/" + split[1];
                 }
-
-                // TODO handle non-primary volumes
             }
             // DownloadsProvider
             else if (isDownloadsDocument(uri)) {
